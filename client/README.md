@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FundFlow - Soroban Fundraising DApp
+
+A decentralized donation fundraising platform built on Stellar using Soroban smart contracts and Next.js.
+
+## Overview
+
+FundFlow allows users to:
+- **Create** fundraising campaigns with a goal amount
+- **Donate** XLM to campaigns  
+- **Withdraw** funds when the goal is reached (campaign owner only)
+
+## Tech Stack
+
+- **Frontend**: Next.js 16, React 19, Tailwind CSS 4
+- **Blockchain**: Stellar Soroban
+- **Smart Contract**: Rust (Soroban SDK v25)
+- **Wallet**: Freighter
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- [Freighter Wallet](https://freighter wallet) browser extension installed
+- Stellar testnet XLM for testing
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Install dependencies
+bun install
+
+# Start development server
+bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Building
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+bun run build
+```
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+client/
+├── app/                  # Next.js app router pages
+│   ├── layout.tsx
+│   └── page.tsx
+├── components/            # React components
+│   ├── Contract.tsx      # Main contract UI
+│   ├── Navbar.tsx
+│   └── ui/            # Reusable UI components
+├── hooks/              # Contract interaction hooks
+│   └── contract.ts
+├── packages/            # Local packages
+│   └── contract/       # TypeScript bindings
+└── lib/               # Utilities
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contract Integration
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The contract is deployed at:
+```
+CCEG5OCIXMVF73CFGI52AOTTPTCIN46QBK2CF7HC7TMSO4YJFU7ZQRPQ
+```
 
-## Deploy on Vercel
+TypeScript bindings are auto-generated in `packages/contract/`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contract Methods
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Method | Description | Auth Required |
+|--------|------------|---------------|
+| `create_campaign(id, owner, goal)` | Create new campaign | Yes (owner) |
+| `donate(id, donor, amount)` | Donate XLM | Yes (donor) |
+| `withdraw(id, owner)` | Withdraw funds | Yes (owner) |
+| `get_campaign(id)` | Get campaign details | No |
+
+## Environment
+
+- **Network**: Stellar Testnet
+- **RPC**: https://soroban-testnet.stellar.org
+- **Horizon**: https://horizon-testnet.stellar.org
+
+## License
+
+MIT
